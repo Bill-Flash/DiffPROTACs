@@ -3,7 +3,7 @@ import torch
 import argparse
 from tqdm import tqdm
 from torch import nn
-import horovod.torch as hvd
+# import horovod.torch as hvd
 from torch.utils.data import distributed, DataLoader
 from pathlib import Path
 
