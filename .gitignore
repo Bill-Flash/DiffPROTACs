@@ -3,3 +3,6 @@ __pycache__
 /wandb
 /protacs_all
 /protacs_out
+/checkpoints
+/protacs
+/logs
