@@ -6,4 +6,5 @@ __pycache__
 /checkpoints
 /protacs
 /logs
-checkpoints/geom_best.ckpt
+/checkpoints/*.ckpt
+/*_out
