@@ -25,7 +25,7 @@ def create_argparser():
         n_samples=1,
         batch_size=512,
         epochs=None,
-        in_node_nf=9,
+        in_node_nf=9, # if zinc, set to 8, if protacs, set to 9
         num_workers=6,
         linker_size=0,
     )
