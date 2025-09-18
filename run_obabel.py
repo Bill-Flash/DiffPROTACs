@@ -4,7 +4,7 @@ import subprocess
 
 def convert(in_path, out_path):
     print(f'Converting {in_path} to {out_path}')
-    subprocess.run(f'obabel "{in_path}" -O "{out_path}" --gen3d', shell=True)
+    subprocess.run(f'/usr/local/bin/obabel "{in_path}" -O "{out_path}" --gen3d', shell=True)
 
 input_dir = sys.argv[1]
 output_dir = sys.argv[2]
