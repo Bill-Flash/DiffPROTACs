@@ -28,13 +28,7 @@ def is_valid(mol_path):
 
 gen_smi_dirs = os.listdir(gen_smi_path)
 for files in gen_smi_dirs:
-    mols = Chem.SDMolSupplier(f'{gen_smi_path}/{files}/true_.sdf')
-    mol_true = mols[0] if mols is not None and len(mols) > 0 else None
-
-    if mol_true is None:
-        print(f"[WARN] Failed to read true_.sdf in {files}, skip this case.")
-        continue
-
+    mol_true = Chem.SDMolSupplier(f'{gen_smi_path}/{files}/true_.sdf')[0]
     true_smi = Chem.MolToSmiles(mol_true)
     smi_group = []
     for i in range(n):
