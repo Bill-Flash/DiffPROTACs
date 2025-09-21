@@ -20,7 +20,11 @@ set -e
 # ==========================================================
 
 TIME_STAMP=$(date +%Y%m%d_%H%M)
-LOGFILE="logs/geom_protacs_test_${TIME_STAMP}.log"
+DATASET="geom"
+TESTSET_PREFIX="protacs_test"
+OBABEL_PARAMS="_addH"  # OpenBabel 参数
+OUTPUT_DIR="${DATASET}_${TESTSET_PREFIX}${OBABEL_PARAMS}_out"
+LOGFILE="logs/${DATASET}_${TESTSET_PREFIX}${OBABEL_PARAMS}_test_${TIME_STAMP}.log"
 
 mkdir -p logs
 
@@ -38,16 +42,21 @@ python test_ddp.py \
   --model_path checkpoints/geom_best.ckpt \
   --data_path datasets \
   --test_data_prefix protacs_test \
-  --output_dir geom_protacs_out \
+  --output_dir "$OUTPUT_DIR" \
   --n_samples 10 \
-  | tee -a "$LOGFILE"
+  2>&1 | tee -a "$LOGFILE"
 
 echo "========== Running run_obabel.py ==========" | tee -a "$LOGFILE"
-python run_obabel.py geom_protacs_out geom_protacs_obabel_out \
-  | tee -a "$LOGFILE"
+python run_obabel.py "$OUTPUT_DIR" "$OUTPUT_DIR" \
+  2>&1 | tee -a "$LOGFILE"
 
 echo "========== Running compute.py ==========" | tee -a "$LOGFILE"
-python compute.py geom_protacs_out 10 \
-  | tee -a "$LOGFILE"
+python compute.py "$OUTPUT_DIR" 10 \
+  2>&1 | tee -a "$LOGFILE"
 
-echo "日志已保存到: $LOGFILE"
+for i in {1..10}; do
+    echo "========== Running with $i ==========" | tee -a "$LOGFILE"
+    python compute.py "$OUTPUT_DIR" $i \
+      2>&1 | tee -a "$LOGFILE"
+done
+echo "日志已保存到: $LOGFILE" | tee -a "$LOGFILE"
