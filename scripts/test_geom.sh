@@ -21,8 +21,8 @@ set -e
 
 TIME_STAMP=$(date +%Y%m%d_%H%M)
 DATASET="geom"
-TESTSET_PREFIX="protacs_test"
-OBABEL_PARAMS="_addH"  # OpenBabel 参数
+TESTSET_PREFIX="geom"
+OBABEL_PARAMS=""  # OpenBabel 参数
 OUTPUT_DIR="${DATASET}_${TESTSET_PREFIX}${OBABEL_PARAMS}_out"
 LOGFILE="logs/${DATASET}_${TESTSET_PREFIX}${OBABEL_PARAMS}_test_${TIME_STAMP}.log"
 
@@ -39,15 +39,15 @@ echo "==================================================" | tee -a "$LOGFILE"
 # 执行步骤
 echo "========== Running test_ddp.py ==========" | tee -a "$LOGFILE"
 python test_ddp.py \
-  --model_path checkpoints/geom_best.ckpt \
+  --model_path checkpoints/geom_self_trained.ckpt \
   --data_path datasets \
-  --test_data_prefix protacs_test \
+  --test_data_prefix "$TESTSET_PREFIX"_test \
   --output_dir "$OUTPUT_DIR" \
-  --n_samples 10 \
+  --n_samples 20 \
   2>&1 | tee -a "$LOGFILE"
 
 echo "========== Running run_obabel.py ==========" | tee -a "$LOGFILE"
-python run_obabel.py "$OUTPUT_DIR" "$OUTPUT_DIR" \
+python run_obabel.py "$OUTPUT_DIR" "$OUTPUT_DIR" 112 \
   2>&1 | tee -a "$LOGFILE"
 
 echo "========== Running compute.py ==========" | tee -a "$LOGFILE"
